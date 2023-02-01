@@ -1,0 +1,103 @@
+{
+	"info": {
+		"_postman_id": "529c3a50-245b-4d36-85d3-9ebb67897c9c",
+		"name": "PetStore",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18551611"
+	},
+	"item": [
+		{
+			"name": "Create a new pet",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"pm.environment.set(\"petid\", jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 40,\r\n    \"category\": {\r\n        \"id\": 0,\r\n        \"name\": \"string\"\r\n    },\r\n    \"name\": \"dog\",\r\n    \"photoUrls\": [\r\n        \"string\"\r\n    ],\r\n    \"tags\": [\r\n        {\r\n            \"id\": 0,\r\n            \"name\": \"string\"\r\n        }\r\n    ],\r\n    \"status\": \"available\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}/pet",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"pet"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Pet via petid",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//id = pm.environment.get(\"petid\");\r",
+							"body = pm.response.json();\r",
+							"body.status = \"sold\"\r",
+							"\r",
+							"const options = {\r",
+							"    method: 'PUT',\r",
+							"    url: 'https://petstore.swagger.io/v2/pet',\r",
+							"    header: {\r",
+							"    'Content-Type': 'application/json'\r",
+							"    },\r",
+							"    body: {\r",
+							"        mode:'raw',\r",
+							"        raw: body\r",
+							"    }\r",
+							"};\r",
+							"\r",
+							"pm.sendRequest(options, function (err, response) {\r",
+							"    if(err){\r",
+							"        console.log(err);\r",
+							"    }\r",
+							"    if(response){\r",
+							"        console.log(response.json());\r",
+							"    }\r",
+							"    \r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/pet/{{petid}}",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"pet",
+						"{{petid}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
